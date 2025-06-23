@@ -1,21 +1,64 @@
 import tkinter as tk
+from unittest.mock import DEFAULT
 
-# Criando a janela principal
+# Criar a janela
 app = tk.Tk()
-app.title("Contador de Livros") #Título
-app.geometry("800x600")  # Largura x Altura
-
-
+app.title("Contador de Livros")
+app.geometry("600x650")
 
 #Label Título
 rotulo = tk.Label(app, text = "Bem-Vindo(a) ao Memórias de um Leitor", font=("Arial",14, "bold"), fg="white", bg="purple")
 rotulo.pack(pady=20)
 
-#Campo de entrada
-entrada = tk.Entry(app, width=30)
-entrada.pack(pady=5)
 
-#Botão
+# ---------- CAMPOS E RÓTULOS ----------
+tk.Label(app, text="Título do Livro:").pack()
+entry_titulo = tk.Entry(app, width=40)
+entry_titulo.pack(pady=5)
 
-# Executando a interface
+tk.Label(app, text="Autor:").pack()
+entry_autor = tk.Entry(app, width=40)
+entry_autor.pack(pady=5)
+
+tk.Label(app, text="Ano:").pack()
+entry_ano = tk.Entry(app, width=40)
+entry_ano.pack(pady=5)
+
+# ---------- CAIXA DE EXIBIÇÃO ----------
+caixa_resultado = tk.Text(app, height=15, width=45, font=("Arial", 12), bg="#f0f0f0", fg="black")
+caixa_resultado.pack(pady=10)
+
+# ---------- FUNÇÃO EXIBIR LIVRO ----------
+def exibir_livro():
+    titulo = entry_titulo.get()
+    autor = entry_autor.get()
+    ano = entry_ano.get()
+
+    if titulo and autor and ano:
+        livro_formatado = f"Título: {titulo}\nAutor: {autor}\nAno: {ano}\n---\n"
+        caixa_resultado.insert(tk.END, livro_formatado)
+        limpar_campos()
+    else:
+        caixa_resultado.insert(tk.END, "⚠️ Preencha todos os campos!\n\n")
+
+def limpar_campos():
+    entry_titulo.delete(0, tk.END)
+    entry_autor.delete(0, tk.END)
+    entry_ano.delete(0, tk.END)
+
+
+# ---------- FUNÇÃO EXCLUIR LIVRO ----------
+def limpar_lista ():
+    caixa_resultado.delete("1.0", tk.END) #apaga a lista completa
+
+
+# ---------- BOTÕES ----------
+# Frame para alinhar os botões lado a lado
+frame_botoes = tk.Frame(app)
+frame_botoes.pack(pady=5)
+
+tk.Button(frame_botoes, text="Cadastrar Livro", command=exibir_livro, width=18).pack(side="left", padx=5)
+tk.Button(frame_botoes, text="Limpar Lista", command=limpar_lista, width=18).pack(side="left", padx=5)
+
+# ---------- EXECUTAR ----------
 app.mainloop()
